@@ -7,36 +7,40 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 
 @Entity
-@Table(name = "Accounts")
+@Table(name = "transactions")
 @Getter
 @Setter
-public class Account {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_Id")
+    @JoinColumn(name = "account_id")
     @NotNull
     @JsonIgnore
-    private Client client;
+    private Account account;
+
+    @Column
+    private Date date;
 
     @Column
     private BigDecimal amount;
 
-    public Account(Client client) {
-        this.client = client;
-        this.amount = BigDecimal.ZERO;
-    }
+    @Column
+    private String operation;
 
-    public Account(Client client, BigDecimal amount) {
-        this.client = client;
+    public Transaction(Account account, BigDecimal amount, String operation) {
+        this.account = account;
+        this.date = Date.from(Instant.now());
         this.amount = amount;
+        this.operation = operation;
     }
 
-    public Account() {}
+    public Transaction() {}
 }

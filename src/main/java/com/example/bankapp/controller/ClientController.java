@@ -21,13 +21,13 @@ public class ClientController {
         this.clientMapper = clientMapper;
     }
 
-    @PostMapping("/save")
+    @PostMapping("client/save")
     public ClientDto saveClient(@RequestBody Client client) {
         clientService.save(client);
         return clientMapper.clientToDto(client);
     }
 
-    @GetMapping("/client/{id}")
+    @GetMapping("client/{id}")
     public ClientDto getClient(@PathVariable Long id) {
         return clientMapper.clientToDto(clientService.getClient(id));
     }

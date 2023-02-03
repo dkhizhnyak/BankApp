@@ -44,6 +44,20 @@ public class TransactionService {
         createTransaction(toAccount, amount, "REFILL");
     }
 
+    public void depositTransaction(Long accountId, BigDecimal amount) {
+        Account account = accountService.getAccount(accountId);
+        account.setAmount(account.getAmount().add(amount));
+        accountRepository.save(account);
+        createTransaction(account, amount, "DEPOSIT");
+    }
+
+    public void withdrawalTransaction(Long accountId, BigDecimal amount) {
+        Account account = accountService.getAccount(accountId);
+        account.setAmount(account.getAmount().subtract(amount));
+        accountRepository.save(account);
+        createTransaction(account, amount, "WITHDRAWAL");
+    }
+
     public Transaction getTransaction(Long id) {
         return transactionRepository.getReferenceById(id);
     }

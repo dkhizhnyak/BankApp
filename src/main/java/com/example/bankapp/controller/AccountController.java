@@ -1,26 +1,19 @@
 package com.example.bankapp.controller;
 
 import com.example.bankapp.entity.Account;
-import com.example.bankapp.persistance.AccountRepository;
 import com.example.bankapp.service.AccountService;
-import com.example.bankapp.service.ClientService;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class AccountController {
-
-    private final AccountRepository accountRepository;
-
-    private final ClientService clientService;
 
     private final AccountService accountService;
 
-    public AccountController(AccountRepository accountRepository, ClientService clientService, AccountService accountService) {
-        this.accountRepository = accountRepository;
-        this.clientService = clientService;
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 

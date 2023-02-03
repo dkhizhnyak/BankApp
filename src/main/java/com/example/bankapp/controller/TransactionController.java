@@ -22,9 +22,26 @@ public class TransactionController {
         return String.format("Successfully transferred money from account with id %s to account with id %s with amount $%s", from, to, amount);
     }
 
+    @GetMapping("/transaction/{id}")
+    public Transaction getTransactionById(@PathVariable Long id) {
+        return transactionService.getTransaction(id);
+    }
+
     @GetMapping("/transaction/transactions/{id}")
     @ResponseBody
     public List<Transaction> getAllTransfersByAccount(@PathVariable Long id) {
         return transactionService.getTransactionsByAccountId(id);
+    }
+
+    @PutMapping("/transaction/deposit/{id}")
+    public String deposit(@PathVariable Long id, @RequestBody BigDecimal amount) {
+        transactionService.depositTransaction(id, amount);
+        return "Account is successfully updated";
+    }
+
+    @PutMapping("/transaction/withdrawal/{id}")
+    public String withdrawal(@RequestBody BigDecimal amount, @PathVariable Long id) {
+        transactionService.withdrawalTransaction(id, amount);
+        return "Account is successfully updated";
     }
 }

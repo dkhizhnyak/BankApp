@@ -7,9 +7,9 @@ import com.example.bankapp.service.ClientService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api")
 public class ClientController {
 
     final ClientService clientService;
@@ -28,12 +28,12 @@ public class ClientController {
     }
 
     @GetMapping("client/{id}")
-    public ClientDto getClient(@PathVariable Long id) {
-        return clientMapper.clientToDto(clientService.getClient(id));
+    public Client getClient(@PathVariable Long id) {
+        return clientService.getClient(id);
     }
 
     @GetMapping("/clients")
-    public List<ClientDto> getAllClients() {
-        return clientService.getAllClients().stream().map(clientMapper::clientToDto).collect(Collectors.toList());
+    public List<Client> getAllClients() {
+        return clientService.getAllClients();
     }
 }

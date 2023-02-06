@@ -3,6 +3,7 @@ package com.example.bankapp.service;
 import com.example.bankapp.date.DateRange;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Transaction;
+import com.example.bankapp.mapper.TransferStatusMapper;
 import com.example.bankapp.persistance.AccountRepository;
 import com.example.bankapp.persistance.TransactionRepository;
 import com.example.bankapp.response.TransferStatus;
@@ -58,12 +59,8 @@ public class TransactionService {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
         }
-        return TransferStatus.builder()
-                .accountFromId(fromAccount.getId())
-                .accountToId(toAccount.getId())
-                .status("SUCCESS")
-                .remainingBalance(fromAccount.getBalance())
-                .build();
+
+        return TransferStatusMapper.mapToResponse(fromAccount, toAccount);
     }
 
     public Account depositTransaction(Long accountId, BigDecimal amount) {
@@ -99,7 +96,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> getAllTransactionsByPeriod(DateRange dateRange) throws Exception {
+    public List<Transaction> getAllTransactionsByPeriod(DateRange dateRange) {
         return transactionRepository.findTransactionsByDateBetween(dateRange.getDateFrom(), dateRange.getDateTo());
     }
 }

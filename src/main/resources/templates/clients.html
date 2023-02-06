@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clients</title>
   <h1>Clients</h1>
-  <link rel="stylesheet" href="css/main.css">
+  <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <style>
   .content-table {
@@ -49,6 +49,7 @@
   }
 
 </style>
+<a th:href="@{/transactions}" class="btn btn-primary">Transactions list</a>
 <body>
 <title>Clients</title>
 <table class="content-table">
@@ -72,9 +73,8 @@
   </tr>
   </tbody>
 </table>
-<form action="http://localhost:8080/clients/new">
-  <input type="submit" value="Add new client" />
-</form>
+
+<a th:href="@{/clients/new}" class="btn btn-primary">Create new client</a>
 
 <script>
   function rowClicked(value) {

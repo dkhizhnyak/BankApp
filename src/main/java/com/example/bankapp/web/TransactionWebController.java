@@ -55,7 +55,7 @@ public class TransactionWebController {
     }
 
     @PostMapping("/transactions")
-    public String transactionsByPeriodHTML(DateRange dateRange, Model model) throws Exception {
+    public String transactionsByPeriodHTML(DateRange dateRange, Model model) {
         model.addAttribute("dateRange", dateRange);
         model.addAttribute("transactions", transactionService.getAllTransactionsByPeriod(dateRange));
         return "transactionsPeriod";

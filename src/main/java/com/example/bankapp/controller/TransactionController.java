@@ -6,7 +6,6 @@ import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Transaction;
 import com.example.bankapp.response.TransferStatus;
 import com.example.bankapp.service.TransactionService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;

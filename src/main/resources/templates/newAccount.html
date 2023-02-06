@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add account</title>
+</head>
+<style>
+  *
+  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    gap: 30px;
+    /*background: #1d2b3a;*/
+  }
+
+  .inputBox {
+    position: relative;
+    width: 250px;
+  }
+
+  .inputBox input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: #1d2b3a;
+    border-radius: 5px;
+    outline: none;
+    color: #fff;
+    font-size: 1em;
+  }
+
+  .inputBox span {
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    transition: 0.5s;
+  }
+
+  .inputBox input:valid ~ span,
+  .inputBox input:focus ~ span {
+    color: #1d2b3a;
+    transform: translateX(10px) translateY(-7px);
+    font-size: 0.65em;
+    padding: 0 10px;
+    background: #00dfc4;
+    border-left: 1px solid #00dfc4;
+    border-right: 1px solid #00dfc4;
+    letter-spacing: 0.2em;
+  }
+</style>
+
+<form action="http://localhost:8080/clients">
+  <input type="submit" value="Clients list" />
+</form>
+
+<button id="redirect_to_client_details" type="submit"
+        style="" onclick="redirect()">Back to client details</button>
+
+<h1>Add new account</h1>
+<body>
+<div class="inputBox">
+  <input id="amount_data" type="number" required="required">
+  <span>amount</span>
+</div>
+<br>
+<button id="send_client" type="submit"
+        style="" onclick="send()">Submit</button>
+
+<script>
+  function send() {
+    if (document.getElementById("amount_data").value !== "") {
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", '/api/accounts' + window.location.pathname.match("/[0-9]+/") +'new', false)
+      xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      xhr.send(document.getElementById("amount_data").value);
+      if (xhr.status === 200) {
+        alert("Success");
+      }
+    } else {
+      alert("You cant save account without amount!")
+    }
+  }
+
+  function redirect() {
+    location.href = "http://localhost:8080/accounts/" + window.location.pathname.match("[0-9]+")
+  }
+</script>
+
+</body>
+</html>

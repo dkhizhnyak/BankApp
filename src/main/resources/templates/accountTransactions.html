@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounts</title>
+  <h1>Accounts</h1>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<style>
+  .content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgb(0, 0, 0, 0.15);
+  }
+
+  .content-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .content-table th,
+  .content-table td {
+    padding: 12px 15px;
+  }
+
+  .content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .content-table tbody th:nth-of-type(even) {
+    background-color: #5d5b5b;
+  }
+
+  .content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+  }
+
+</style>
+<body>
+<form action="http://localhost:8080/clients">
+  <input type="submit" value="Clients list" />
+</form>
+<title>Transactions</title>
+<table class="content-table">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Amount</th>
+    <th>Operation</th>
+    <th>Date</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${transactions.empty}">
+    <td colspan="2"> No Transactions Available </td>
+  </tr>
+  <tr class="active-row" th:each="transaction : ${transactions}">
+    <td><span th:text="${transaction.id}"> id </span></td>
+    <td><span th:text="${transaction.amount}"> amount </span>
+    <td><span th:text="${transaction.operation}"> operation </span></td>
+    <td><span th:text="${transaction.date}"> date </span></td>
+  </tr>
+  </tbody>
+</table>
+
+<button id="transfer_transaction" type="submit"
+        style="" onclick="redirectNew()">Create new transfer transaction</button>
+
+<button id="deposit_transaction" type="submit"
+        style="" onclick="redirectDeposit()">Deposit to account</button>
+
+<button id="withdrawal_transaction" type="submit"
+        style="" onclick="redirectWithdrawal()">Withdrawal from account</button>
+
+<script>
+  function redirectNew() {
+    location.href = "http://localhost:8080/transactions/account/" + window.location.pathname.match("[0-9]+") + "/new";
+  }
+
+  function redirectDeposit() {
+    location.href = "http://localhost:8080/transactions/account/" + window.location.pathname.match("[0-9]+") + "/deposit";
+  }
+
+  function redirectWithdrawal() {
+    location.href = "http://localhost:8080/transactions/account/" + window.location.pathname.match("[0-9]+") + "/withdrawal";
+  }
+</script>

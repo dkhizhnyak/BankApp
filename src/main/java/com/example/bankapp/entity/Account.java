@@ -26,16 +26,16 @@ public class Account {
     private Client client;
 
     @Column
-    private BigDecimal amount;
+    private BigDecimal balance;
 
     public Account(Client client) {
         this.client = client;
-        this.amount = BigDecimal.ZERO;
+        this.balance = BigDecimal.ZERO;
     }
 
     public Account(Client client, BigDecimal amount) {
         this.client = client;
-        this.amount = amount;
+        this.balance = amount;
     }
 
     public Account() {}

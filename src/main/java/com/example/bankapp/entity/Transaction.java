@@ -27,6 +27,7 @@ public class Transaction {
     private Account account;
 
     @Column
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @Column

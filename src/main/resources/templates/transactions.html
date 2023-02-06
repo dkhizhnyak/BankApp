@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clients</title>
-  <h1>Clients</h1>
+  <title>Transactions</title>
+  <h1>Transactions</h1>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <style>
@@ -43,42 +43,31 @@
     border-bottom: 2px solid #009879;
   }
 
-  .content-table tr:hover {
-    font-weight: bold;
-    color: #009879;
-  }
-
 </style>
 <body>
-<title>Clients</title>
+<form action="http://localhost:8080/clients">
+  <input type="submit" value="Clients list" />
+</form>
+<title>Transactions</title>
 <table class="content-table">
   <thead>
   <tr>
     <th>ID</th>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Age</th>
+    <th>Amount</th>
+    <th>Operation</th>
+    <th>Date</th>
+
   </tr>
   </thead>
   <tbody>
-  <tr th:if="${clients.empty}">
-    <td colspan="2"> No Clients Available </td>
+  <tr th:if="${transactions.empty}">
+    <td colspan="2"> No Transactions Available </td>
   </tr>
-  <tr class="active-row" th:each="client : ${clients}" style="cursor: pointer" th:attr="onclick=|rowClicked('${client.id}')|">
-    <td><span th:text="${client.id}"> id </span></td>
-    <td><span th:text="${client.name}"> name </span></td>
-    <td><span th:text="${client.address}"> address </span></td>
-    <td><span th:text="${client.age}"> age </span></td>
+  <tr class="active-row" th:each="transaction : ${transactions}">
+    <td><span th:text="${transaction.id}"> id </span></td>
+    <td><span th:text="${transaction.amount}"> amount </span>
+    <td><span th:text="${transaction.operation}"> operation </span></td>
+    <td><span th:text="${transaction.date}"> date </span></td>
   </tr>
   </tbody>
 </table>
-<form action="http://localhost:8080/clients/new">
-  <input type="submit" value="Add new client" />
-</form>
-
-<script>
-  function rowClicked(value) {
-    location.href = "http://localhost:8080/accounts/" + value;
-  }
-</script>
-</body>

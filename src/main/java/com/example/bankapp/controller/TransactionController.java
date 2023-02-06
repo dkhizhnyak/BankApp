@@ -1,5 +1,6 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.dto.TransferDto;
 import com.example.bankapp.entity.Transaction;
 import com.example.bankapp.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
@@ -16,32 +17,37 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PutMapping("/transaction/transfer")
-    public String transfer(@RequestParam Long from, Long to, BigDecimal amount) {
-        transactionService.transferTransaction(from, to, amount);
-        return String.format("Successfully transferred money from account with id %s to account with id %s with amount $%s", from, to, amount);
+    @PostMapping("/transaction/transfer")
+    public String transfer(@RequestBody TransferDto dto) {
+        transactionService.transferTransaction(dto.getFrom(), dto.getTo(), dto.getAmount());
+        return String.format("Successfully transferred money from account with id %s to account with id %s with amount $%s", dto.getFrom(), dto.getTo(), dto.getAmount());
     }
 
-    @GetMapping("/transaction/{id}")
+    @GetMapping("/{id}")
     public Transaction getTransactionById(@PathVariable Long id) {
         return transactionService.getTransaction(id);
     }
 
-    @GetMapping("/transaction/transactions/{id}")
+    @GetMapping("/transactions/{id}")
     @ResponseBody
     public List<Transaction> getAllTransfersByAccount(@PathVariable Long id) {
         return transactionService.getTransactionsByAccountId(id);
     }
 
-    @PutMapping("/transaction/deposit/{id}")
+    @PostMapping("/deposit/{id}")
     public String deposit(@PathVariable Long id, @RequestBody BigDecimal amount) {
         transactionService.depositTransaction(id, amount);
         return "Account is successfully updated";
     }
 
-    @PutMapping("/transaction/withdrawal/{id}")
+    @PostMapping("/withdrawal/{id}")
     public String withdrawal(@RequestBody BigDecimal amount, @PathVariable Long id) {
         transactionService.withdrawalTransaction(id, amount);
         return "Account is successfully updated";
+    }
+
+    @GetMapping("/transactions/period")
+    public List<Transaction> transactionsByPeriod(@RequestParam String from, @RequestParam String to) throws Exception {
+        return transactionService.getAllTransactionsByPeriod(from, to);
     }
 }

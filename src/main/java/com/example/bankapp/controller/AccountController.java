@@ -17,8 +17,8 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @PostMapping("account/new")
-    public String saveAccount(@RequestParam Long id, BigDecimal amount) {
+    @PostMapping("accounts/{id}/new")
+    public String saveAccount(@PathVariable Long id, @RequestBody BigDecimal amount) {
         accountService.save(id, amount);
         return String.format("Account for user with id %s successfully saved", id);
     }

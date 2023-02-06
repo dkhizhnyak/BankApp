@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clients</title>
-  <h1>Clients</h1>
+  <title>Accounts</title>
+  <h1>Accounts</h1>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <style>
@@ -50,35 +50,41 @@
 
 </style>
 <body>
-<title>Clients</title>
+<form action="http://localhost:8080/clients">
+  <input type="submit" value="Clients list" />
+</form>
+<title>Accounts</title>
 <table class="content-table">
   <thead>
   <tr>
     <th>ID</th>
-    <th>Name</th>
-    <th>Address</th>
-    <th>Age</th>
+    <th>Balance</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:if="${clients.empty}">
-    <td colspan="2"> No Clients Available </td>
+  <tr th:if="${accounts.empty}">
+    <td colspan="2"> No Accounts Available </td>
   </tr>
-  <tr class="active-row" th:each="client : ${clients}" style="cursor: pointer" th:attr="onclick=|rowClicked('${client.id}')|">
-    <td><span th:text="${client.id}"> id </span></td>
-    <td><span th:text="${client.name}"> name </span></td>
-    <td><span th:text="${client.address}"> address </span></td>
-    <td><span th:text="${client.age}"> age </span></td>
+  <tr class="active-row" th:each="account : ${accounts}" style="cursor: pointer" th:attr="onclick=|rowClicked('${account.id}')|">
+    <td><span th:text="${account.id}"> id </span></td>
+    <td><span th:text="${account.balance}"> balance </span></td>
   </tr>
   </tbody>
 </table>
-<form action="http://localhost:8080/clients/new">
-  <input type="submit" value="Add new client" />
-</form>
+<!--<form>-->
+<!--  <input type="submit" value="Add new account" onclick="redirect()"/>-->
+<!--</form>-->
+<button id="create_account" type="submit"
+        style="" onclick="redirect()">Create new account</button>
 
 <script>
-  function rowClicked(value) {
-    location.href = "http://localhost:8080/accounts/" + value;
+  function redirect() {
+    location.href = "http://localhost:8080/accounts" + window.location.pathname.match("/[0-9]+") + "/new"
   }
+
+  function rowClicked(value) {
+    location.href = "http://localhost:8080/transactions/account/" + value
+  }
+
 </script>
 </body>

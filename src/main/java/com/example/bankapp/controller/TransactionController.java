@@ -1,8 +1,12 @@
 package com.example.bankapp.controller;
 
+import com.example.bankapp.date.DateRange;
 import com.example.bankapp.dto.TransferDto;
+import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Transaction;
+import com.example.bankapp.response.TransferStatus;
 import com.example.bankapp.service.TransactionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -18,9 +22,8 @@ public class TransactionController {
     }
 
     @PostMapping("/transaction/transfer")
-    public String transfer(@RequestBody TransferDto dto) {
-        transactionService.transferTransaction(dto.getFrom(), dto.getTo(), dto.getAmount());
-        return String.format("Successfully transferred money from account with id %s to account with id %s with amount $%s", dto.getFrom(), dto.getTo(), dto.getAmount());
+    public TransferStatus transfer(@RequestBody TransferDto dto) {
+        return transactionService.transferTransaction(dto.getFrom(), dto.getTo(), dto.getAmount());
     }
 
     @GetMapping("/{id}")
@@ -34,20 +37,18 @@ public class TransactionController {
         return transactionService.getTransactionsByAccountId(id);
     }
 
-    @PostMapping("/deposit/{id}")
-    public String deposit(@PathVariable Long id, @RequestBody BigDecimal amount) {
-        transactionService.depositTransaction(id, amount);
-        return "Account is successfully updated";
+    @PostMapping("transaction/deposit/{id}")
+    public Account deposit(@PathVariable Long id, @RequestBody BigDecimal amount) {
+        return transactionService.depositTransaction(id, amount);
     }
 
-    @PostMapping("/withdrawal/{id}")
-    public String withdrawal(@RequestBody BigDecimal amount, @PathVariable Long id) {
-        transactionService.withdrawalTransaction(id, amount);
-        return "Account is successfully updated";
+    @PostMapping("transaction/withdrawal/{id}")
+    public Account withdrawal(@RequestBody BigDecimal amount, @PathVariable Long id) {
+        return transactionService.withdrawalTransaction(id, amount);
     }
 
     @GetMapping("/transactions/period")
-    public List<Transaction> transactionsByPeriod(@RequestParam String from, @RequestParam String to) throws Exception {
-        return transactionService.getAllTransactionsByPeriod(from, to);
+    public List<Transaction> transactionsByPeriod(@RequestBody DateRange dateRange) throws Exception {
+        return transactionService.getAllTransactionsByPeriod(dateRange);
     }
 }

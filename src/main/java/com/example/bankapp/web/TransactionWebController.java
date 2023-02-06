@@ -46,22 +46,18 @@ public class TransactionWebController {
 
     @GetMapping("/transactions")
     public String allTransactionHTML(Model model) {
-        model.addAttribute("transactions", transactionService.getAllTransactions());
-        return "transactions";
-    }
-
-    @GetMapping
-    public String main(Model model) {
         DateRange dateRange = new DateRange();
         dateRange.setDateFrom(new Date());
         dateRange.setDateTo(new Date());
         model.addAttribute("dateRange", dateRange);
-        return "index";
+        model.addAttribute("transactions", transactionService.getAllTransactions());
+        return "transactions";
     }
 
-    @PostMapping
-    public String save(DateRange dateRange, Model model) {
+    @PostMapping("/transactions")
+    public String transactionsByPeriodHTML(DateRange dateRange, Model model) throws Exception {
         model.addAttribute("dateRange", dateRange);
-        return "saved";
+        model.addAttribute("transactions", transactionService.getAllTransactionsByPeriod(dateRange));
+        return "transactionsPeriod";
     }
 }

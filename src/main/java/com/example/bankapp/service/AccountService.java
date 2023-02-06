@@ -19,9 +19,9 @@ public class AccountService {
         this.clientService = clientService;
     }
 
-    public void save(Long id, BigDecimal amount) {
+    public Account save(Long id, BigDecimal amount) {
         Client client = clientService.getClient(id);
-        accountRepository.save(new Account(client, amount));
+        return accountRepository.save(new Account(client, amount));
     }
 
     public Account getAccount(Long id) {

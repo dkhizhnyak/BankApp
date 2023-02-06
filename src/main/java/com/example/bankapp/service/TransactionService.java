@@ -1,9 +1,11 @@
 package com.example.bankapp.service;
 
+import com.example.bankapp.date.DateRange;
 import com.example.bankapp.entity.Account;
 import com.example.bankapp.entity.Transaction;
 import com.example.bankapp.persistance.AccountRepository;
 import com.example.bankapp.persistance.TransactionRepository;
+import com.example.bankapp.response.TransferStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,8 +13,6 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,7 +36,10 @@ public class TransactionService {
     }
 
     @Transactional
-    public void transferTransaction(Long from, Long to, BigDecimal amount) {
+    public TransferStatus transferTransaction(Long from, Long to, BigDecimal amount) {
+        if (from.equals(to)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "From and to must be different accounts!");
+        }
         Account fromAccount = accountService.getAccount(from);
         Account toAccount = accountService.getAccount(to);
 
@@ -55,20 +58,33 @@ public class TransactionService {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");
         }
+        return TransferStatus.builder()
+                .accountFromId(fromAccount.getId())
+                .accountToId(toAccount.getId())
+                .status("SUCCESS")
+                .remainingBalance(fromAccount.getBalance())
+                .build();
     }
 
-    public void depositTransaction(Long accountId, BigDecimal amount) {
+    public Account depositTransaction(Long accountId, BigDecimal amount) {
         Account account = accountService.getAccount(accountId);
         account.setBalance(account.getBalance().add(amount));
         accountRepository.save(account);
         createTransaction(account, amount, "DEPOSIT");
+        return account;
     }
 
-    public void withdrawalTransaction(Long accountId, BigDecimal amount) {
+    public Account withdrawalTransaction(Long accountId, BigDecimal amount) {
         Account account = accountService.getAccount(accountId);
+
+        if (account.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough balance!");
+        }
+
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account);
         createTransaction(account, amount, "WITHDRAWAL");
+        return account;
     }
 
     public Transaction getTransaction(Long id) {
@@ -83,11 +99,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> getAllTransactionsByPeriod(String from, String to) throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        Date fromDate = format.parse(from);
-        Date toDate = format.parse(to);
-
-        return transactionRepository.findTransactionsByDateBetween(fromDate, toDate);
+    public List<Transaction> getAllTransactionsByPeriod(DateRange dateRange) throws Exception {
+        return transactionRepository.findTransactionsByDateBetween(dateRange.getDateFrom(), dateRange.getDateTo());
     }
 }

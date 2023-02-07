@@ -1,4 +1,10 @@
 ﻿# BankApp
+# Requirements
+    It's required to configure connection to a postgresql database
+    It can be achieved by setting up a local postgresql server or running docker
+    Then you must specify URL path in "application.properties" file in "spring.datasource.url" propertie (also ensure
+    that your "spring.datasource.username", "spring.datasource.password" properties also set to a valid values)
+    
 Application allows user to create clients within system using postgresql database
 All clients have possibility to have any number of accounts with some amount on balance
 
@@ -39,7 +45,6 @@ Application can be used through implemented UI form or through direct API calls:
         {"from": accountId,
          "to": accountId,
          "amount": Integer}
- 
 ~~~
 
        

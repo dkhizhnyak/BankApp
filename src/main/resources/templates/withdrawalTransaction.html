@@ -116,6 +116,7 @@
       xhr.send(document.getElementById("amount_data").value);
       if (xhr.status === 200) {
         alert("Success");
+        location.reload()
       }
     } else {
       alert("Amount to can't be empty!")

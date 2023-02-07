@@ -47,7 +47,12 @@ public class TransactionController {
     }
 
     @GetMapping("/transactions/period")
-    public List<Transaction> transactionsByPeriod(@RequestBody DateRange dateRange) throws Exception {
-        return transactionService.getAllTransactionsByPeriod(dateRange);
+    public List<Transaction> transactionsByPeriod(@RequestParam String from, @RequestParam String to) throws Exception {
+        return transactionService.getAllTransactionsByPeriod(from, to);
+    }
+
+    @GetMapping("/api/transactions")
+    public List<Transaction> allTransactions() {
+        return transactionService.getAllTransactions();
     }
 }

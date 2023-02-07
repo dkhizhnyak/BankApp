@@ -14,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -98,5 +100,13 @@ public class TransactionService {
 
     public List<Transaction> getAllTransactionsByPeriod(DateRange dateRange) {
         return transactionRepository.findTransactionsByDateBetween(dateRange.getDateFrom(), dateRange.getDateTo());
+    }
+
+    public List<Transaction> getAllTransactionsByPeriod(String from, String to) throws Exception {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        Date fromDate = format.parse(from);
+        Date toDate = format.parse(to);
+
+        return transactionRepository.findTransactionsByDateBetween(fromDate, toDate);
     }
 }

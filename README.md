@@ -10,7 +10,7 @@ All clients have possibility to have any number of accounts with some amount on 
 
 First you need to create a client, then create account for existing client, then you have possibility to deposit, withdrawal 
 and transfer money from one account to another.
-Application can be used through implemented UI form or through direct API calls:
+Application can be used through implemented UI form available at @/clients URL or through direct API calls:
 
 ## Save new client
 ~~~
@@ -24,11 +24,25 @@ Application can be used through implemented UI form or through direct API calls:
        "name": String,
        "address": String,
        "age": Integer }
-~~~     
+~~~
+
+## Get a list of clients
+~~~
+    GET @/api/clients
+    
+    #Return list of all existing clients
+~~~
+
+## Get a list of accounts for a particular client
+~~~
+    GET @/api/accounts/{id} (id - clientId)
+    
+    #Return list of all existing accounts for a particular client
+~~~
 
 ## Save new account for a client
 ~~~
-    POST @/accounts/{id}/new
+    POST @/api/accounts/{id}/new
     # Request body:
         {"id": Integer,
          "amount": Integer}
@@ -40,12 +54,42 @@ Application can be used through implemented UI form or through direct API calls:
 
 ## Transfer to another account
 ~~~
-    Post @/transaction/transfer
+    POST @/transaction/transfer
     # Request body:
         {"from": accountId,
          "to": accountId,
          "amount": Integer}
 ~~~
 
+## Deposit to the account
+~~~
+    POST @/transaction/deposit/{id} (id is a accountId)
+    # Request body:
+        Integer number
+~~~
+
+## Withdrawal from the account
+~~~
+    POST @/transaction/withdrawal/{id} (id is a accountId)
+    # Request body:
+        Integer number
+~~~
+
+## Get list of all existing transactions
+~~~
+    GET @/api/transactions
+    #Response body:
+        List of all existing transactions
+~~~
+
+## Get list of transactions by a date range
+~~~
+        GET @/transactions/period
+    #Request params:
+        from: yyyy/MM/dd
+        to: yyyy/MM/dd
+    #Response body:
+        list of transactions filtered ba a date range
+~~~
        
   
